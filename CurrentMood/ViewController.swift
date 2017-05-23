@@ -21,8 +21,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     //MARK: Actions
     @IBAction func searchClarifai(_ sender: UIButton) {
         //if imageURL != nil {
-        clarifaiClient.postImage(image: photoImageView.image!)
+        clarifaiClient.postImage(image: photoImageView.image!, callback: postImageCallback)
         //}
+    }
+    
+    func postImageCallback(result: [String]){
+        for item in result{
+            print(item)
+        }
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "Segue", sender: self)
+        }
     }
     
     @IBAction func selectPhoto(_ sender: UITapGestureRecognizer) {

@@ -306,6 +306,7 @@
 				1625FE531E3328B6006F7B23 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

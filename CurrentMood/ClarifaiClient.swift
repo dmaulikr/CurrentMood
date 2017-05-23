@@ -64,7 +64,7 @@ class ClarifaiClient {
         
     }
     
-    func postImage(image: UIImage){
+    func postImage(image: UIImage, callback: @escaping ([String])->Void){
         let url = URL(string: urlpath + "tag/")
         var urlRequest = URLRequest(url: url!)
         let boundary = generateBoundaryString();
@@ -100,21 +100,14 @@ class ClarifaiClient {
             }
             
             do {
-                guard let receivedTags = try JSONSerialization.jsonObject(with: responseData, options: [])as? [String: Any] else {
-                    print("could not get tags")
-                    return
-                }
-                let tempResult = receivedTags.first
-                //let result = tempResult["result"]
-                //print("Tags: \(result)")
-
-                /*if let results: [String: Any] = receivedTags[0] as? [String: Any]{
-                    let result = results["result"] as! [String: Any]
-                    let classes = result["classes"]
-                    print("Classes: \(classes)")
-                }*/
-                
-                //print("Tag: \(result)")
+                let receivedTags = try JSONSerialization.jsonObject(with: responseData, options: []) as! [String: Any]
+                let results = receivedTags["results"] as? [Any]
+                let firstResult = results?.first as? [String: Any]
+                let result = firstResult?["result"] as? [String: Any]
+                let tag = result?["tag"] as? [String: Any]
+                let classes = tag?["classes"] as! [String]
+                callback(classes);
+                //print("Tags: \(classes.first ?? "fuck")")
                 
             } catch {
                 print("error parsing response from /tag")
