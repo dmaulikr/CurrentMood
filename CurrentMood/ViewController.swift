@@ -25,12 +25,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         //}
     }
     
+    var result: [String]!
+    
     func postImageCallback(result: [String]){
         for item in result{
             print(item)
         }
+        self.result = result
         DispatchQueue.main.async {
             self.performSegue(withIdentifier: "Segue", sender: self)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "Segue"){
+            if let destination = segue.destination as? TagTableViewController {
+                destination.tags = result
+            }
         }
     }
     
